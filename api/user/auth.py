@@ -1,7 +1,7 @@
 import os
-import jwt  # used for encoding and decoding jwt tokens
-from fastapi import HTTPException  # used to handle error handling
-from passlib.context import CryptContext  # used for hashing the password
+import jwt
+from fastapi import HTTPException
+from passlib.context import CryptContext
 # used to handle expiry time for tokens
 from datetime import datetime, timedelta
 

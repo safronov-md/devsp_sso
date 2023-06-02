@@ -26,3 +26,9 @@ services:
       - 8000:8000
     env_file:
       - ./api/local.env
+    networks:
+      - devsp
+
+networks:
+  devsp:
+    external: true
