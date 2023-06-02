@@ -15,7 +15,7 @@ services:
   api:
     depends_on:
       - mysql
-    container_name: fast_api
+    container_name: sso 
     platform: linux/x86_64
     build: ./api
     restart: unless-stopped

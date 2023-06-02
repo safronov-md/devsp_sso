@@ -101,25 +101,3 @@ def update_user_api(user_details: UserUpdateRequestModel, credentials: HTTPAutho
         user = update_user(user_details)
         return JSONResponse(status_code=200, content=jsonable_encoder(user))
     return JSONResponse(status_code=401, content={'error': 'Faild to authorize'})
-
-
-###############################
-########## Test APIs ##########
-###############################
-
-@app.get('/secret')
-def secret_data_api(credentials: HTTPAuthorizationCredentials = Security(security)):
-    """
-    This secret API is just for testing. Need access token to access this API.
-    """
-    token = credentials.credentials
-    if (auth_handler.decode_token(token)):
-        return 'Top Secret data only authorized users can access this info'
-
-
-@app.get('/not-secret')
-def not_secret_data_api():
-    """
-    This not-secret API is just for testing.
-    """
-    return 'Not secret data'

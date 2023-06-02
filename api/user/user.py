@@ -1,3 +1,4 @@
+from exceptions import ProblemBadRequest, ProblemUnauthorized
 from fastapi import HTTPException
 from database.query import query_get, query_put, query_update
 from .auth import Auth
@@ -34,11 +35,9 @@ def register_user(user_model: UserUpdateRequestModel):
 def signin_user(email, password):
     user = get_user_by_email(email)
     if len(user) == 0:
-        print('Invalid email')
-        raise HTTPException(status_code=401, detail='Invalid email')
+        raise ProblemUnauthorized("Provided email is invalid")
     if (not auth_handler.verify_password(password, user[0]['password_hash'])):
-        print('Invalid password')
-        raise HTTPException(status_code=401, detail='Invalid password')
+        raise ProblemUnauthorized("Provided password is invalid")
     return user[0]
 
 
@@ -61,6 +60,8 @@ def update_user(user_model: UserUpdateRequestModel):
               )
               )
     user = get_user_by_email(user_model.email)
+    if not user:
+        raise ProblemBadRequest(f"User with provided email = {user_model.email} wasn't found")
     return user[0]
 
 
@@ -96,7 +97,7 @@ def get_user_by_id(id: int):
             user.id,
             user.first_name,
             user.last_name,
-            user.email,
+            user.email
         FROM user 
         WHERE id = %s
         """, (id))
